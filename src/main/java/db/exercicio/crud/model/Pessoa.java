@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -30,7 +31,7 @@ public class Pessoa implements Serializable {
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "data_nascimento")
-    private Date dataNascimento;
+    private LocalDateTime dataNascimento;
 
     @Column(name = "cpf", unique = true, nullable = false)
     @NotBlank(message = "Campo não pode está vazio!")
@@ -55,11 +56,11 @@ public class Pessoa implements Serializable {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDateTime getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDateTime dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

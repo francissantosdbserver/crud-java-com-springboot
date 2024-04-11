@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -52,19 +53,18 @@ public class PessoaService {
     //Mostrar idade Pessoa
     public int mostrarIdade(String cpf) {
         Pessoa idadePessoa = pessoaRepository.findByCpf(cpf);
-        Date dataNascimento = idadePessoa.getDataNascimento();
-        int idade = calcularIdade(dataNascimento);
-        return idade;
+        LocalDateTime dataNascimento = idadePessoa.getDataNascimento();
+        return calcularIdade(dataNascimento);
     }
 
-    public int calcularIdade(Date dataNascimento) {
-        Calendar calendar = Calendar.getInstance();
-        Calendar hoje = Calendar.getInstance();
-        calendar.setTime(dataNascimento);
-        int idade = hoje.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-        return idade;
-    }
 
+    //Calcular idade
+    public int calcularIdade(LocalDateTime dataNascimento) {
+        int anoNascimento = dataNascimento.getYear();
+        LocalDateTime hoje = LocalDateTime.now();
+        int AnoHoje = hoje.getYear();
+        return AnoHoje - anoNascimento ;
+    }
 
     public Pessoa vinculaEnderecoPessoa(String cpf) {
              Pessoa pessoa = pessoaRepository.findByCpf(cpf);
@@ -72,17 +72,12 @@ public class PessoaService {
              return pessoa;
     }
 
+    public Pessoa vinculaEnderecoPessoa(@RequestBody String cpf, Endereco endereco) {
+        Optional<Pessoa> optionalPessoa = Optional.ofNullable(pessoaRepository.findByCpf(cpf));
+            Pessoa pessoa = optionalPessoa.get();
 
-
-//    public Pessoa vinculaEnderecoPessoa(@RequestBody String cpf, Endereco endereco) {
-//        System.out.println("CPF: #############################" +cpf);
-//        System.out.println("ENDERECO: ########################"+endereco);
-//        Optional<Pessoa> optionalPessoa = Optional.ofNullable(pessoaRepository.findByCpf(cpf));
-//        System.out.println("optionalPessoa: #################" + optionalPessoa);
-//            Pessoa pessoa = optionalPessoa.get();
-//            System.out.println("PESSOA: #################" + pessoa);
-//            pessoa.getEnderecos().add(endereco);
-//            endereco.setPessoas((Set<Pessoa>) pessoa);
-//            return pessoaRepository.save(pessoa);
-//    }
+            pessoa.getEnderecos().add(endereco);
+            endereco.setPessoas((Set<Pessoa>) pessoa);
+            return pessoaRepository.save(pessoa);
+    }
 }

@@ -3,6 +3,7 @@ package db.exercicio.crud.controller;
 import db.exercicio.crud.model.Endereco;
 import db.exercicio.crud.model.Pessoa;
 import db.exercicio.crud.service.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
